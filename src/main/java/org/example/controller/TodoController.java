@@ -10,6 +10,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @CrossOrigin // CORS 이슈를 막기위한 어노테이션
 @RequestMapping("/") // base URL 설정
@@ -49,7 +50,12 @@ public class TodoController {
     @GetMapping
     public ResponseEntity<List<TodoResponse>> readAll() {
         System.out.println("READ ALL");
-        return null;
+
+        List<TodoEntity> result = todoService.searchAll();
+        List<TodoResponse> response = result.stream().map(entity -> new TodoResponse(entity))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(response);
     }
 
     @PatchMapping("{id}")
