@@ -31,11 +31,25 @@ public class TodoService {
     }
 
     public List<TodoEntity> searchAll() {
-        return null;
+        return todoRepository.findAll();
     }
 
-    public TodoEntity update(Long id) {
-        return null;
+    public TodoEntity update(Long id, TodoRequest request) {
+        TodoEntity entity = searchById(id);
+
+        if (request.getTitle() != null) {
+            entity.setTitle(request.getTitle());
+        }
+
+        if (request.getOrder() != null) {
+            entity.setOrder(request.getOrder());
+        }
+
+        if (request.getCompleted() != null) {
+            entity.setCompleted(request.getCompleted());
+        }
+
+        return todoRepository.save(entity);
     }
 
     public void deleteById(Long id) {
