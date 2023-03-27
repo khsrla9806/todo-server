@@ -1,8 +1,7 @@
 package org.example.service;
 
-import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.example.model.TodoEntity;
+import org.example.model.TodoModel;
 import org.example.model.TodoRequest;
 import org.example.repository.TodoRepository;
 import org.springframework.http.HttpStatus;
@@ -16,8 +15,8 @@ import java.util.List;
 public class TodoService {
     private final TodoRepository todoRepository;
 
-    public TodoEntity add(TodoRequest request) {
-        TodoEntity entity = TodoEntity.builder()
+    public TodoModel add(TodoRequest request) {
+        TodoModel entity = TodoModel.builder()
                 .title(request.getTitle())
                 .order(request.getOrder())
                 .completed(request.getCompleted())
@@ -26,16 +25,16 @@ public class TodoService {
         return todoRepository.save(entity);
     }
 
-    public TodoEntity searchById(Long id) {
+    public TodoModel searchById(Long id) {
         return todoRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    public List<TodoEntity> searchAll() {
+    public List<TodoModel> searchAll() {
         return todoRepository.findAll();
     }
 
-    public TodoEntity update(Long id, TodoRequest request) {
-        TodoEntity entity = searchById(id);
+    public TodoModel update(Long id, TodoRequest request) {
+        TodoModel entity = searchById(id);
 
         if (request.getTitle() != null) {
             entity.setTitle(request.getTitle());

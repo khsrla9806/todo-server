@@ -14,7 +14,7 @@ public class TodoResponse {
     private Boolean completed;
     private String url;
 
-    public TodoResponse(TodoEntity entity) {
+    public TodoResponse(TodoModel entity) {
         this.id = entity.getId();
         this.title = entity.getTitle();
         this.order = entity.getOrder();

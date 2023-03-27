@@ -1,7 +1,7 @@
 package org.example.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.model.TodoEntity;
+import org.example.model.TodoModel;
 import org.example.model.TodoRequest;
 import org.example.service.TodoService;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +12,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -29,11 +28,11 @@ class TodoControllerTest {
     @MockBean
     TodoService todoService;
 
-    private TodoEntity expected;
+    private TodoModel expected;
 
     @BeforeEach
     public void setUp() {
-        expected = TodoEntity.builder()
+        expected = TodoModel.builder()
                 .id(123L)
                 .title("Test Title")
                 .order(0L)
@@ -46,7 +45,7 @@ class TodoControllerTest {
         when(todoService.add(any(TodoRequest.class)))
                 .then((r) -> {
                     TodoRequest todoRequest = r.getArgument(0, TodoRequest.class);
-                    return TodoEntity.builder()
+                    return TodoModel.builder()
                             .id(expected.getId())
                             .title(todoRequest.getTitle())
                             .order(expected.getOrder())

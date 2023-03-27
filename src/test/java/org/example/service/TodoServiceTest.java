@@ -1,6 +1,6 @@
 package org.example.service;
 
-import org.example.model.TodoEntity;
+import org.example.model.TodoModel;
 import org.example.model.TodoRequest;
 import org.example.repository.TodoRepository;
 import org.junit.jupiter.api.Test;
@@ -34,20 +34,20 @@ class TodoServiceTest {
 
     @Test
     void add() {
-        when(todoRepository.save(any(TodoEntity.class)))
+        when(todoRepository.save(any(TodoModel.class)))
                 .then(AdditionalAnswers.returnsFirstArg());
 
         TodoRequest expected = new TodoRequest();
         expected.setTitle("TEST TITLE");
 
-        TodoEntity actual = todoService.add(expected);
+        TodoModel actual = todoService.add(expected);
 
         assertEquals(expected.getTitle(), actual.getTitle());
     }
 
     @Test
     void searchById() {
-        TodoEntity entity = TodoEntity.builder()
+        TodoModel entity = TodoModel.builder()
                 .id(123L)
                 .title("Test Title")
                 .completed(false)
@@ -55,14 +55,14 @@ class TodoServiceTest {
                 .build();
 
         // Optional로 Mapping: findById의 return 값이 Optional 이기 때문에
-        Optional<TodoEntity> optional = Optional.of(entity);
+        Optional<TodoModel> optional = Optional.of(entity);
 
         // findById에 어느 Long 값이 들어왔을 때, optional을 반환하도록
         given(todoRepository.findById(anyLong()))
                 .willReturn(optional);
 
-        TodoEntity actual = todoService.searchById(123L);
-        TodoEntity expected = optional.get();
+        TodoModel actual = todoService.searchById(123L);
+        TodoModel expected = optional.get();
 
         assertEquals(expected.getId(), actual.getId());
         assertEquals(expected.getTitle(), actual.getTitle());
