@@ -40,9 +40,10 @@ public class TodoController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<TodoResponse> readOne() {
+    public ResponseEntity<TodoResponse> readOne(@PathVariable Long id) {
         System.out.println("READ ONE");
-        return null;
+        TodoEntity entity = todoService.searchById(id);
+        return ResponseEntity.ok(new TodoResponse(entity));
     }
 
     @GetMapping
