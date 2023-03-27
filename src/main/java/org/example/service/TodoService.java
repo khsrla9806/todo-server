@@ -14,7 +14,13 @@ public class TodoService {
     private final TodoRepository todoRepository;
 
     public TodoEntity add(TodoRequest request) {
-        return null;
+        TodoEntity entity = TodoEntity.builder()
+                .title(request.getTitle())
+                .order(request.getOrder())
+                .completed(request.getCompleted())
+                .build();
+
+        return todoRepository.save(entity);
     }
 
     public TodoEntity searchById(Long id) {
