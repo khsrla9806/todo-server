@@ -10,8 +10,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class) // Mock 사용을 위한 어노테이션
@@ -42,5 +46,26 @@ class TodoServiceTest {
 
     @Test
     void searchById() {
+        TodoEntity entity = TodoEntity.builder()
+                .id(123L)
+                .title("Test Title")
+                .completed(false)
+                .order(1L)
+                .build();
+
+        // Optional로 Mapping: findById의 return 값이 Optional 이기 때문에
+        Optional<TodoEntity> optional = Optional.of(entity);
+
+        // findById에 어느 Long 값이 들어왔을 때, optional을 반환하도록
+        given(todoRepository.findById(anyLong()))
+                .willReturn(optional);
+
+        TodoEntity actual = todoService.searchById(123L);
+        TodoEntity expected = optional.get();
+
+        assertEquals(expected.getId(), actual.getId());
+        assertEquals(expected.getTitle(), actual.getTitle());
+        assertEquals(expected.getOrder(), actual.getOrder());
+        assertEquals(expected.getCompleted(), actual.getCompleted());
     }
 }
